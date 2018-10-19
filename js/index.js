@@ -1,14 +1,14 @@
 var Engine = Matter.Engine,
-Render = Matter.Render,
-World = Matter.World,
-Mouse = Matter.Mouse,
-Bodies = Matter.Bodies,
-Common = Matter.Common,
-Vertices = Matter.Vertices,
-Svg = Matter.Svg,
-Constraint = Matter.Constraint,
-Composites = Matter.Composites,
-MouseConstraint = Matter.MouseConstraint;
+  Render = Matter.Render,
+  World = Matter.World,
+  Mouse = Matter.Mouse,
+  Bodies = Matter.Bodies,
+  Common = Matter.Common,
+  Vertices = Matter.Vertices,
+  Svg = Matter.Svg,
+  Constraint = Matter.Constraint,
+  Composites = Matter.Composites,
+  MouseConstraint = Matter.MouseConstraint;
 
 // create an engine
 var engine = Engine.create();
@@ -40,7 +40,7 @@ function init() {
     engine: engine,
     options: {
       wireframes: false,
-      background: 'transparent',
+      background: "#111111",
       width: width,
       height: height,
       showDebug: false,
@@ -57,72 +57,81 @@ function init() {
       showVertexNumbers: false,
       showConvexHulls: false,
       showInternalEdges: false,
-      showMousePosition: false } });
-
-
+      showMousePosition: false
+    }
+  });
 
   // create two boxes and a ground
   // add all of the bodies to the world
   World.add(engine.world, [
-  Bodies.rectangle(width / 2, height / 2, 500, 46, {
-    isStatic: true,
-    render: {
-      fillStyle: "transparent" } }),
+    Bodies.rectangle(width / 2, height / 2, 500, 46, {
+      isStatic: true,
+      render: {
+        fillStyle: "transparent"
+      }
+    }),
 
+    Bodies.rectangle(width / 2, height / 2 - 40, 180, 20, {
+      isStatic: true,
+      render: {
+        fillStyle: "transparent"
+      }
+    }),
 
+    Bodies.rectangle(width / 2, height / 2 + 40, 180, 20, {
+      isStatic: true,
+      render: {
+        fillStyle: "transparent"
+      }
+    }),
 
-  Bodies.rectangle(width / 2, height / 2 - 40, 180, 20, {
-    isStatic: true,
-    render: {
-      fillStyle: "transparent" } }),
+    Bodies.rectangle(width / 2, height - offset, width, 1, {
+      isStatic: true,
+      render: {
+        fillStyle: "#111111"
+      }
+    }),
 
+    Bodies.rectangle(width / 2, offset, width, 1, {
+      isStatic: true,
+      render: {
+        fillStyle: "#111111"
+      }
+    }),
 
-  Bodies.rectangle(width / 2, height / 2 + 40, 180, 20, {
-    isStatic: true,
-    render: {
-      fillStyle: "transparent" } }),
+    Bodies.rectangle(offset, height / 2, 1, height, {
+      isStatic: true,
+      render: {
+        fillStyle: "#111111"
+      }
+    }),
 
-
-  Bodies.rectangle(width / 2, height - offset, width, 1, {
-    isStatic: true,
-    render: {
-      fillStyle: "#FFFFFF" } }),
-
-
-  Bodies.rectangle(width / 2, offset, width, 1, {
-    isStatic: true,
-    render: {
-      fillStyle: "#FFFFFF" } }),
-
-
-  Bodies.rectangle(offset, height / 2, 1, height, {
-    isStatic: true,
-    render: {
-      fillStyle: "#FFFFFF" } }),
-
-
-  Bodies.rectangle(width - offset, height / 2, 1, height, {
-    isStatic: true,
-    render: {
-      fillStyle: "#FFFFFF" } })]);
-
-
-
+    Bodies.rectangle(width - offset, height / 2, 1, height, {
+      isStatic: true,
+      render: {
+        fillStyle: "#111111"
+      }
+    })
+  ]);
 
   for (var i = 0; i < 230; i++) {
     var radius = 2 + Math.random() * 20;
-    World.add(engine.world, Bodies.circle(
-    40 + Math.random() * width - 80,
-    40 + Math.random() * 100,
-    radius, {
-      render: {
-        fillStyle: ["#4285F4", "#EA4335", "#FBBC05", "#34A853"][Math.round(Math.random() * 3)] } }));
-
-
-
-
+    World.add(
+      engine.world,
+      Bodies.circle(
+        40 + Math.random() * width - 80,
+        40 + Math.random() * 100,
+        radius,
+        {
+          render: {
+            fillStyle: ["#4285F4", "#EA4335", "#FBBC05", "#34A853"][
+              Math.round(Math.random() * 3)
+            ]
+          }
+        }
+      )
+    );
   }
-
 
   // run the engine
   Engine.run(engine);
@@ -132,9 +141,9 @@ function init() {
 
   var inc = 0;
 
-  engine.world.gravity.y = 4;
+  engine.world.gravity.y = 2;
   function update() {
-    if (inc > 8) {
+    if (inc > 10) {
       engine.world.gravity.x = Math.cos(inc / 55);
       engine.world.gravity.y = Math.sin(inc / 55);
     }
@@ -148,8 +157,9 @@ init();
 
 function debounce(func, wait, immediate) {
   var timeout;
-  return function () {
-    var context = this,args = arguments;
+  return function() {
+    var context = this,
+      args = arguments;
     var later = function later() {
       timeout = null;
       if (!immediate) func.apply(context, args);
@@ -159,9 +169,14 @@ function debounce(func, wait, immediate) {
     timeout = setTimeout(later, wait);
     if (callNow) func.apply(context, args);
   };
-};
+}
 
-
-$(window).on("resize", debounce(function () {
-  init();
-}.bind(undefined), 200));
+$(window).on(
+  "resize",
+  debounce(
+    function() {
+      init();
+    }.bind(undefined),
+    200
+  )
+);
